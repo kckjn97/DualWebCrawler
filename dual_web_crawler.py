@@ -47,7 +47,7 @@ class DualWebCrawler:
 			soup  = selected[0]
 		return soup
 
-	def _get_dual_scrap(self, url, selector, use_selnium, dual_scrap):
+	def _get_dual_scrap(self, url, selector, use_selenium, dual_scrap):
 		if dual_scrap == True:
 			try:
 				soup = self._get_soup(url, selector, False)
