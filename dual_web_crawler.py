@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium import webdriver
 import re
+import time
 
 class DualWebCrawler:
 	def __init__(self, web_driver_path = None):
@@ -27,7 +28,6 @@ class DualWebCrawler:
 			self.driver.get(url)
 			self.driver.implicitly_wait(5)
 			html = self.driver.page_source
-			print('use selenium')
 
 		else:
 			headers = {'Content-Type': 'charset=utf-8', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36'}
@@ -39,6 +39,7 @@ class DualWebCrawler:
 
 	def _get_soup(self, url, selector, use_selenium):
 		html = self.request_html(url, use_selenium)
+
 		soup = BeautifulSoup(html, 'html.parser')
 
 		if selector:
@@ -64,16 +65,17 @@ class DualWebCrawler:
 			_result = soup.get_text().strip()
 			result = re.sub('\s\s+', ' ', _result)
 		else:
-			result = str(soup)
+			result = soup
 		return result
 
 	def scrap_all(self, url, selector, dual_scrap = True, use_selenium = True, remove_html = True,):
 		soup = self._get_dual_scrap(url, selector, use_selenium, dual_scrap)
 		result = []
+
 		for soup in selected:
 			if remove_html:
 				_result = soup.get_text().strip()
 				result.append(re.sub('\s\s+', ' ', _result))
 			else:
-				result.append(str(soup))
+				result.append(soup)
 		return result
